@@ -6,8 +6,11 @@ import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 import game_files.HelperClasses.GetScreenSize;
+import game_files.gfx.ImageLoader;
+import game_files.gfx.SpriteSheet;
 
 //Runnable makes game run on its own thread
 public class Game implements Runnable {//	Main game class
@@ -22,6 +25,14 @@ public class Game implements Runnable {//	Main game class
 	private Thread thread;
 	private BufferStrategy bs;
 	private Graphics g;
+	
+	
+	
+	
+	///////////
+	private BufferedImage testImage;
+	private SpriteSheet sheet;
+	//////////
 
 	public Game(String title, int screen) {//	For full screen
 		wantedDisplay = HelperClasses.GetScreenSize.getSizeOfMonitor(screen);
@@ -44,6 +55,8 @@ public class Game implements Runnable {//	Main game class
 		else
 			display = new Display(title, wantedDisplay, width, height);
 		
+		testImage = ImageLoader.loadImage("/textures/Test.PNG");
+		sheet = new SpriteSheet(testImage);
 		
 	}
 	private void update() {
@@ -58,11 +71,15 @@ public class Game implements Runnable {//	Main game class
 		
 		//Allows us to draw to canvas, like a paint brush
 		g = bs.getDrawGraphics();
+		
 		//Clear screen
 		g.clearRect(0, 0, width, height);//	clear whole screen
 		//Draw
 		g.setColor(Color.pink);
-		g.fillRect(100, 50, 500, height-100);
+		g.fillRect(100, 500, 50, 50);
+		
+		g.drawImage(testImage, 100, 100, null);//	Null is image observer, don't know what it do
+		g.drawImage(sheet.crop(100, 0, 32, 32), 200, 800, null);
 		
 		//	Tell java we are done drawing
 		bs.show();
