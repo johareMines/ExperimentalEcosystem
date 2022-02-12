@@ -4,11 +4,10 @@ import java.awt.Color;
 import java.awt.DisplayMode;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
-import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
-import game_files.HelperClasses.GetScreenSize;
+import game_files.gfx.Assets;
 import game_files.gfx.ImageLoader;
 import game_files.gfx.SpriteSheet;
 
@@ -30,12 +29,12 @@ public class Game implements Runnable {//	Main game class
 	
 	
 	///////////
-	private BufferedImage testImage;
-	private SpriteSheet sheet;
+//	private BufferedImage testImage;
+//	private SpriteSheet sheet;
 	//////////
 
 	public Game(String title, int screen) {//	For full screen
-		wantedDisplay = HelperClasses.GetScreenSize.getSizeOfMonitor(screen);
+		wantedDisplay = HelperMethods.getSizeOfMonitor(screen);
 		DisplayMode dm = wantedDisplay.getDisplayMode();//	Allows to get resolution
 		this.width = dm.getWidth();
 		this.height = dm.getHeight();
@@ -54,13 +53,15 @@ public class Game implements Runnable {//	Main game class
 			display = new Display(title, width, height);
 		else
 			display = new Display(title, wantedDisplay, width, height);
-		
-		testImage = ImageLoader.loadImage("/textures/Test.PNG");
-		sheet = new SpriteSheet(testImage);
+		Assets.init();
+//		testImage = ImageLoader.loadImage("/textures/Test.PNG");
+//		sheet = new SpriteSheet(testImage);
 		
 	}
+	
+	int x=0;
 	private void update() {
-		
+		x+=1;
 	}
 	private void render() {
 		bs = display.getCanvas().getBufferStrategy();//	Tells computer how to draw to screen using buffer
@@ -78,8 +79,10 @@ public class Game implements Runnable {//	Main game class
 		g.setColor(Color.pink);
 		g.fillRect(100, 500, 50, 50);
 		
-		g.drawImage(testImage, 100, 100, null);//	Null is image observer, don't know what it do
-		g.drawImage(sheet.crop(100, 0, 32, 32), 200, 800, null);
+		g.drawImage(Assets.player, x, 10, null);
+		
+//		g.drawImage(testImage, 100, 100, null);//	Null is image observer, don't know what it do
+//		g.drawImage(sheet.crop(100, 0, 32, 32), 200, 800, null);
 		
 		//	Tell java we are done drawing
 		bs.show();
@@ -88,9 +91,39 @@ public class Game implements Runnable {//	Main game class
 	public void run() {
 		init();
 		
+		
+		//FPS settings
+		int fps = 144;
+		
+		double timePerTick = 1000000000 / fps; // 1 billion, = time in nanoseconds
+		double delta = 0;
+		long now;
+		long lastTime = System.nanoTime();
+		long timer = 0;
+		int ticks = 0;
+		
 		while(gameRunning) {
-			update();
-			render();
+			now = System.nanoTime();
+			delta += (now - lastTime) / timePerTick;
+			timer += now - lastTime;
+			lastTime = now;
+
+			if(delta >= 1) {
+				update();
+				render();
+				ticks++;
+				delta--;
+			}
+			
+			if (timer >= 1000000000) {
+				System.out.println("FPS: " + ticks);
+				ticks = 0;
+				timer = 0;
+			}
+			///////End FPS//////////
+			
+			
+			
 		}
 		stop();
 	}
