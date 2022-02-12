@@ -10,6 +10,9 @@ import java.awt.image.BufferedImage;
 import game_files.gfx.Assets;
 import game_files.gfx.ImageLoader;
 import game_files.gfx.SpriteSheet;
+import game_files.states.GameState;
+import game_files.states.MenuState;
+import game_files.states.State;
 
 //Runnable makes game run on its own thread
 public class Game implements Runnable {//	Main game class
@@ -25,7 +28,9 @@ public class Game implements Runnable {//	Main game class
 	private BufferStrategy bs;
 	private Graphics g;
 	
-	
+	//States
+	private State gameState;
+	private State menuState;
 	
 	
 	///////////
@@ -54,14 +59,22 @@ public class Game implements Runnable {//	Main game class
 		else
 			display = new Display(title, wantedDisplay, width, height);
 		Assets.init();
+		
+		
+		gameState = new GameState();
+		menuState = new MenuState();
+		State.setState(gameState);
+		
 //		testImage = ImageLoader.loadImage("/textures/Test.PNG");
 //		sheet = new SpriteSheet(testImage);
 		
 	}
 	
-	int x=0;
+	//int x=0;
 	private void update() {
-		x+=1;
+		//x+=1;
+		if (State.getState() != null)
+			State.getState().update();
 	}
 	private void render() {
 		bs = display.getCanvas().getBufferStrategy();//	Tells computer how to draw to screen using buffer
@@ -76,10 +89,13 @@ public class Game implements Runnable {//	Main game class
 		//Clear screen
 		g.clearRect(0, 0, width, height);//	clear whole screen
 		//Draw
-		g.setColor(Color.pink);
-		g.fillRect(100, 500, 50, 50);
+		if (State.getState() != null)
+			State.getState().render(g);
 		
-		g.drawImage(Assets.player, x, 10, null);
+//		g.setColor(Color.pink);
+//		g.fillRect(100, 500, 50, 50);
+		
+		//g.drawImage(Assets.player, x, 10, null);
 		
 //		g.drawImage(testImage, 100, 100, null);//	Null is image observer, don't know what it do
 //		g.drawImage(sheet.crop(100, 0, 32, 32), 200, 800, null);

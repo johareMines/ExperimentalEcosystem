@@ -9,5 +9,6 @@ public class Assets {
 		SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Test.PNG"));
 		
 		player = sheet.crop(width*2, 0, width, height);
+		
 	}
 }
