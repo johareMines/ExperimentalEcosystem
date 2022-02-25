@@ -2,11 +2,16 @@ package game_files;
 
 import java.awt.Canvas;
 import java.awt.Dimension;//	Screen resolution
+import java.awt.Frame;
 import java.awt.GraphicsDevice;//	Monitors
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class Display {
 	private static JFrame frame;
@@ -43,16 +48,25 @@ public class Display {
 		frame = new JFrame(title);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//	May not stop the program when closing window without this line
-		frame.setVisible(true);//	these things aren't visible by default lmao java
 		
 		if (isCustomSize) {
 			frame.setSize(width, height);
 			frame.setLocationRelativeTo(null);
+			frame.setUndecorated(false);
 		} else {//	Make full screen if not custom size
-			//chooseScreen(screen);
-			wantedDisplay.setFullScreenWindow(frame);
+			//wantedDisplay.setFullScreenWindow(frame);//	Fullscreen is shit, minimizes on focus loss, do borderless window
+			Dimension screenSize = wantedDisplay.getDefaultConfiguration().getBounds().getSize();
+			frame.setSize(screenSize);
+			//record these bounds
+			HelperMethods.screenWidth = (int) screenSize.getWidth();
+			HelperMethods.screenHeight = (int) screenSize.getHeight();
+			
+		    frame.setLocation(wantedDisplay.getDefaultConfiguration().getBounds().getLocation());
+			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+			frame.setUndecorated(true);
 		}
 		
+		frame.setVisible(true);//	these things aren't visible by default lmao java
 		
 		canvas = new Canvas();
 		canvas.setPreferredSize(new Dimension(width, height));
@@ -64,7 +78,11 @@ public class Display {
 	}
 	
 	
+	public static JFrame getFrame() {
+		return frame;
+	}
 	public Canvas getCanvas() {
 		return canvas;
 	}
+	
 }

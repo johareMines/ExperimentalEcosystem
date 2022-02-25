@@ -1,9 +1,11 @@
 package game_files;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.DisplayMode;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
+import java.awt.MouseInfo;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
@@ -64,10 +66,6 @@ public class Game implements Runnable {//	Main game class
 		gameState = new GameState();
 		menuState = new MenuState();
 		State.setState(gameState);
-		
-//		testImage = ImageLoader.loadImage("/textures/Test.PNG");
-//		sheet = new SpriteSheet(testImage);
-		
 	}
 	
 	//int x=0;
@@ -132,14 +130,11 @@ public class Game implements Runnable {//	Main game class
 			}
 			
 			if (timer >= 1000000000) {
-				System.out.println("FPS: " + ticks);
+				//System.out.println("FPS: " + ticks);
 				ticks = 0;
 				timer = 0;
 			}
 			///////End FPS//////////
-			
-			
-			
 		}
 		stop();
 	}
