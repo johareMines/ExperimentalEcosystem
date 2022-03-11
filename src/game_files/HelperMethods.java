@@ -10,7 +10,8 @@ public class HelperMethods {
 	public static final float INVISIBLE_BOUNDARY = 30;
 	public static int screenWidth;
 	public static int screenHeight;
-	public static String[] names = {"BARN HARNIT", "EGG NAD"};
+	public static String[] names = {"BARN HARNIT", "EGG NAD", "Fallen Tree", "Gust of three winds", "sanko", "Teebo",
+			"Waltz", "Prouu", "Fredrick", "slow bump"};
 
 
 	public static GraphicsDevice getSizeOfMonitor(int screen) {

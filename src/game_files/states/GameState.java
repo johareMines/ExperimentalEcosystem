@@ -1,9 +1,11 @@
 package game_files.states;
 
 import java.awt.Graphics;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import game_files.HelperMethods;
+import game_files.entities.Creature;
 import game_files.entities.Entity;
 import game_files.entities.Slime;
 import game_files.gfx.Assets;
@@ -37,6 +39,30 @@ public class GameState extends State {
 		for (Entity e : entities) {
 			e.render(g);
 		}
+	}
+
+
+	public ArrayList<Entity> getEntities() {
+		return entities;
+	}
+	
+	public ArrayList<Creature> getCreatures() {
+		ArrayList<Creature> returnList = new ArrayList<>();
+		for (Entity e : entities) {
+			if (e instanceof Creature) {
+				returnList.add((Creature) e);
+			}
+		}
+		return returnList;
+	}
+	
+	
+	//Adder methods for the JUnit tests
+	public void addSlime(float x, float y) {
+		entities.add(new Slime(x,y));
+	}
+	public void addSlime(float x, float y, String name) {
+		entities.add(new Slime(x, y, name));
 	}
 
 }

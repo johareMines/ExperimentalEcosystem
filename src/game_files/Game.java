@@ -159,4 +159,8 @@ public class Game implements Runnable {//	Main game class
 			e.printStackTrace();
 		}
 	}
+	
+	public State getState() {
+		return gameState;
+	}
 }
