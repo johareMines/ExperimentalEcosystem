@@ -7,13 +7,14 @@ import game_files.HelperMethods;
 public abstract class Creature extends Entity {
 	public static final int START_SIZE = 30;
 	private int health, maxHealth, size;
-	private float directionX, directionY, speed;
+	private float directionX, directionY, speed, hunger;
 	private String name;
 	public Creature(float x, float y, String name) {
 		super(x, y);
 		this.size = START_SIZE;
 		this.maxHealth = size*3;
 		this.speed = (float)size/50;
+		this.hunger = 100;
 		this.health = maxHealth;
 		//this.directionX = x;
 		this.directionX = 3000;
@@ -56,4 +57,11 @@ public abstract class Creature extends Entity {
 	public void setSpeed(float speed) {
 		this.speed = speed;
 	}
+	public float getHunger() {
+		return hunger;
+	}
+	public void setHunger(float hunger) {
+		this.hunger = hunger;
+	}
+	
 }

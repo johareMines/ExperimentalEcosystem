@@ -6,9 +6,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import game_files.Game;
+import game_files.HelperMethods;
 import game_files.Launcher;
 import game_files.entities.Creature;
 import game_files.entities.Entity;
+import game_files.entities.Slime;
 import game_files.states.GameState;
 import game_files.states.State;
 
@@ -29,12 +31,11 @@ class SlimeTests {
 	}
 	
 	@Test
-	void testName() {
+	void testGoHungry() {
+		Slime hungry = new Slime(50, 50, "Hungry boi");
+		hungry.setHunger(20);
+		state.addSlime(hungry);
 		
-		for (Creature c : state.getCreatures()) {
-			c.getName();
-		}
-		fail();
 	}
 
 }

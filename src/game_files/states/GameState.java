@@ -64,5 +64,8 @@ public class GameState extends State {
 	public void addSlime(float x, float y, String name) {
 		entities.add(new Slime(x, y, name));
 	}
+	public void addSlime(Slime slime) {
+		entities.add(slime);
+	}
 
 }
