@@ -8,6 +8,7 @@ import game_files.HelperMethods;
 import game_files.gfx.Assets;
 
 public class Slime extends Creature{
+	public enum SlimeBehavior {RANDOM, TOWARDS_FOOD};
 	private SlimeBehavior behavior;
 
 	private float directionVariance = 100;//	How much do they change their mind about where to go?
