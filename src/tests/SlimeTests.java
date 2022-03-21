@@ -1,19 +1,20 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import game_files.Game;
 import game_files.HelperMethods;
 import game_files.Launcher;
+import game_files.entities.Berry;
 import game_files.entities.Creature;
 import game_files.entities.Entity;
 import game_files.entities.Slime;
 import game_files.states.GameState;
 import game_files.states.State;
-import junit.framework.Assert;
 
 class SlimeTests {
 //	static Game game;
@@ -31,13 +32,26 @@ class SlimeTests {
 //		state = (GameState) game.getState();
 //	}
 	
-	@SuppressWarnings("deprecation")
+	Slime slime;
+	
+	@BeforeEach
+	void setup() {
+		slime = new Slime(50, 50, 30, "The Tester");
+	}
+	
 	@Test
 	void testGoHungry() {
-		Slime hungry = new Slime(50, 50, 30, "Hungry boi");
-		hungry.setHunger(20);
-		hungry.update();
-		Assert.assertEquals(hungry.getSlimeBehavior(), Slime.SlimeBehavior.TOWARDS_FOOD);
+		slime.setHunger(20);
+		slime.update();
+		Assert.assertEquals(slime.getSlimeBehavior(), Slime.SlimeBehavior.TOWARDS_FOOD);
+	}
+	
+	@Test
+	void testEat() {
+		slime.setHunger(20);
+		Berry berry = new Berry(50, 50); //Spawn one on the slime
+		slime.update();
+		Assert.assertTrue(slime.getHunger() > 20);
 	}
 	
 	
