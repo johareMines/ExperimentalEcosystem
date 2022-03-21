@@ -16,6 +16,8 @@ import game_files.states.GameState;
 import game_files.states.MenuState;
 import game_files.states.State;
 
+import java.util.concurrent.ExecutorService;
+
 //Runnable makes game run on its own thread
 public class Game implements Runnable {//	Main game class
 	private Display display;
@@ -34,6 +36,8 @@ public class Game implements Runnable {//	Main game class
 	private State gameState;
 	private State menuState;
 	
+	
+	public ExecutorService executorService;
 	
 	///////////
 //	private BufferedImage testImage;

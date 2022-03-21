@@ -13,28 +13,21 @@ public class Slime extends Creature{
 
 	private float directionVariance = 100;//	How much do they change their mind about where to go?
 
-	public Slime(float x, float y) {
-		this (x, y, null);
+	public Slime(float x, float y, int startSize) {
+		this (x, y, startSize, null);
 	}
-	public Slime(float x, float y, String name) {
-		super (x, y, name);
-		selectBehavior(SlimeBehavior.RANDOM);
+	public Slime(float x, float y, int startSize, String name) {
+		super (x, y, startSize, name);
+		setBehavior(SlimeBehavior.RANDOM);
 	}
 
 	@Override
 	public void update() {
-		switch (behavior) {//	Choose what movement method to run
-		case RANDOM:
-			randomBehavior();
-			break;
-		case TOWARDS_FOOD:
-			super.setPosition(getPositionX()+1, getPositionY()+1);
-			break;
-		}
-
-		//super.setPosition(getPositionX()+1, getPositionY()+1);
+		selectAppropriateBehavior();
+		actOnBehavior();
 	}
 
+	
 	@Override
 	public void render(Graphics g) {
 		//g.drawImage(Assets.player, 0, 0, null);
@@ -42,7 +35,11 @@ public class Slime extends Creature{
 
 	}
 
-
+	private void selectAppropriateBehavior() {
+		if (super.getHunger() < 50) {
+			setBehavior(SlimeBehavior.TOWARDS_FOOD);
+		}
+	}
 	private void randomBehavior() {
 		//System.out.println("Doing rand behav");
 		float stepSize = HelperMethods.monteCarlo() * directionVariance;
@@ -83,11 +80,25 @@ public class Slime extends Creature{
 		
 		super.setPosition(super.getPositionX()+velocityX, super.getPositionY()+velocityY);
 	}
-
-
-
-	private void selectBehavior(SlimeBehavior behavior) {
-		System.out.println("Slime " + super.getName() + " selected behavior " + behavior);
+	
+	private void actOnBehavior() {
+		switch (behavior) {//	Choose what movement method to run
+		case RANDOM:
+			randomBehavior();
+			break;
+		case TOWARDS_FOOD:
+			super.setPosition(getPositionX()+1, getPositionY()+1);
+			break;
+		}
+	}
+	
+	public SlimeBehavior getSlimeBehavior() {
+		return behavior;
+	}
+	public void setBehavior(SlimeBehavior behavior) {
+		if (this.behavior == behavior)
+			return;
+		System.out.println("Slime " + super.getName()+ " selected behavior " + behavior);
 		this.behavior = behavior;
 	}
 }

@@ -5,20 +5,19 @@ import javax.swing.text.Position;
 import game_files.HelperMethods;
 
 public abstract class Creature extends Entity {
-	public static final int START_SIZE = 30;
-	private int health, maxHealth, size;
+	private int health, maxHealth, size, hungerThreshold;
 	private float directionX, directionY, speed, hunger;
 	private String name;
-	public Creature(float x, float y, String name) {
+	public Creature(float x, float y, int startSize, String name) {
 		super(x, y);
-		this.size = START_SIZE;
+		this.size = startSize;
 		this.maxHealth = size*3;
 		this.speed = (float)size/50;
 		this.hunger = 100;
 		this.health = maxHealth;
-		//this.directionX = x;
 		this.directionX = 3000;
 		this.directionY = y;
+		this.hungerThreshold = 50;
 		if (name == null)
 			this.name = HelperMethods.getName();
 		else 
@@ -63,5 +62,12 @@ public abstract class Creature extends Entity {
 	public void setHunger(float hunger) {
 		this.hunger = hunger;
 	}
+	public int getHungerThreshold() {
+		return hungerThreshold;
+	}
+	public void setHungerThreshold(int hungerThreshold) {
+		this.hungerThreshold = hungerThreshold;
+	}
+	
 	
 }

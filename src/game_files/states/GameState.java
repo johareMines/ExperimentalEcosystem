@@ -21,8 +21,10 @@ public class GameState extends State {
 		
 		//Declare Slime Amount
 		for (int i=0; i<HelperMethods.SLIME_START_AMT; i++) {
-			entities.add(new Slime(HelperMethods.rand().nextInt(HelperMethods.screenWidth), HelperMethods.rand().nextInt(HelperMethods.screenHeight)));
-			
+			int startX = HelperMethods.rand().nextInt(HelperMethods.screenWidth);
+			int startY = HelperMethods.rand().nextInt(HelperMethods.screenHeight);
+			int startSize = HelperMethods.rand().nextInt(20, 50);
+			entities.add(new Slime(startX, startY, startSize));
 		}
 	}
 	
@@ -57,15 +59,15 @@ public class GameState extends State {
 	}
 	
 	
-	//Adder methods for the JUnit tests
-	public void addSlime(float x, float y) {
-		entities.add(new Slime(x,y));
-	}
-	public void addSlime(float x, float y, String name) {
-		entities.add(new Slime(x, y, name));
-	}
-	public void addSlime(Slime slime) {
-		entities.add(slime);
-	}
+//	//Adder methods for the JUnit tests
+//	public void addSlime(float x, float y) {
+//		entities.add(new Slime(x,y));
+//	}
+//	public void addSlime(float x, float y, String name) {
+//		entities.add(new Slime(x, y, name));
+//	}
+//	public void addSlime(Slime slime) {
+//		entities.add(slime);
+//	}
 
 }
