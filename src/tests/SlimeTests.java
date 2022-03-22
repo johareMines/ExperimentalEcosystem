@@ -4,19 +4,12 @@ package tests;
 import java.util.ArrayList;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import game_files.Game;
-import game_files.HelperMethods;
-import game_files.Launcher;
 import game_files.entities.Berry;
-import game_files.entities.Creature;
 import game_files.entities.Entity;
 import game_files.entities.Slime;
-import game_files.states.GameState;
-import game_files.states.State;
 
 class SlimeTests {
 //	static Game game;
@@ -46,13 +39,17 @@ class SlimeTests {
 	}
 	
 	@Test
+	//Test slimes can get hungry
 	void testGoHungry() {
 		slime.setHunger(20);
+		Berry berry = new Berry(50, 150, 10); //Spawn one a bit away
+		entities.add(berry);
 		slime.update();
 		Assert.assertEquals(slime.getSlimeBehavior(), Slime.SlimeBehavior.TOWARDS_FOOD);
 	}
 	
 	@Test
+	//Test that slimes can eat
 	void testEat() {
 		slime.setHunger(20);
 		Berry berry = new Berry(50, 50, 10); //Spawn one on the slime
@@ -61,6 +58,17 @@ class SlimeTests {
 		Assert.assertTrue(slime.getHunger() > 20);// It should have eaten the berry
 	}
 	
+	
+	@Test
+	//Test that slimes know how to select berries as targets
+	void testBerryTargetSelection() {
+		slime.setHunger(20);
+		Berry berry = new Berry(50, 150, 10); //Spawn one a bit away
+		entities.add(berry);
+		slime.update();
+		Assert.assertTrue(berry.getPositionX() == slime.getDirectionX());
+		Assert.assertTrue(berry.getPositionY() == slime.getDirectionY());
+	}
 	
 
 }

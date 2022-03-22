@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class HelperMethods {
 
-	public static final int SLIME_START_AMT = 30;
+	public static final int SLIME_START_AMT = 3;
 	public static final float INVISIBLE_BOUNDARY = 30;
 	public static int screenWidth;
 	public static int screenHeight;
@@ -46,6 +46,9 @@ public class HelperMethods {
 	public static float getDistance(float x1, float y1, float x2, float y2) {
 		float xDiff = x1 - x2;
 		float yDiff = y1 - y2;
+		if (Float.isNaN(xDiff) || Float.isNaN(yDiff)) {
+			return (float) 0;
+		}
 		return (float) Math.sqrt((Math.pow(xDiff, 2)+Math.pow(yDiff, 2)));
 	}
 

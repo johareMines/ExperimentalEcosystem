@@ -10,6 +10,7 @@ public abstract class Entity {
 	private int size;
 	
 	private static ArrayList<Entity> relevantEntities;
+	private static ArrayList<Entity> entitiesToRemove; // Will be removed after loops finish to avoid concurrent modification exception
 	
 	public Entity (float x, float y, int startSize) {
 		this.x = x;
@@ -23,7 +24,8 @@ public abstract class Entity {
 	
 	public void killSelf() {
 		//remove references to self, Garbage collector should remove it
-		relevantEntities.remove(this);
+//		relevantEntities.remove(this);
+		entitiesToRemove.add(this);
 	}
 	
 	
@@ -53,6 +55,14 @@ public abstract class Entity {
 		relevantEntities = rE;
 	}
 
+	public static ArrayList<Entity> getEntitiesToRemove() {
+		return entitiesToRemove;
+	}
+
+	public static void setEntitiesToRemove(ArrayList<Entity> entitiesToRemove) {
+		Entity.entitiesToRemove = entitiesToRemove;
+	}
+	
 	
 	
 }

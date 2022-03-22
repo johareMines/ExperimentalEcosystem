@@ -5,7 +5,7 @@ import javax.swing.text.Position;
 import game_files.HelperMethods;
 
 public abstract class Creature extends Entity {
-	private int health, maxHealth, hungerThreshold;
+	private int health, maxHealth, getHungryThreshold, willEatThreshold;
 	private float directionX, directionY, speed, hunger;
 	private String name;
 	public Creature(float x, float y, int startSize, String name) {
@@ -16,12 +16,29 @@ public abstract class Creature extends Entity {
 		this.health = maxHealth;
 		this.directionX = 3000;
 		this.directionY = y;
-		this.hungerThreshold = 50;
+		this.getHungryThreshold = 50;
+		this.willEatThreshold = 70;
 		if (name == null)
 			this.name = HelperMethods.getName();
 		else 
 			this.name = name;
 	}
+	
+	
+	public void navigateTowardsDirection() {
+		float newDirX = getDirectionX() - getPositionX();
+		float newDirY = getDirectionY() - getPositionY();
+		//Normalize this
+		float vectorLength = (float) Math.sqrt(Math.pow(newDirX, 2) + Math.pow(newDirY, 2));
+		float normalizedDirX = newDirX/vectorLength;
+		float normalizedDirY = newDirY/vectorLength;
+
+		float velocityX = normalizedDirX*getSpeed();
+		float velocityY = normalizedDirY*getSpeed();
+
+		setPosition(getPositionX()+velocityX, getPositionY()+velocityY);
+	}
+	
 	public int getHealth() {
 		return health;
 	}
@@ -61,11 +78,17 @@ public abstract class Creature extends Entity {
 	public void setHunger(float hunger) {
 		this.hunger = hunger;
 	}
-	public int getHungerThreshold() {
-		return hungerThreshold;
+	public int getHungryThreshold() {
+		return getHungryThreshold;
 	}
-	public void setHungerThreshold(int hungerThreshold) {
-		this.hungerThreshold = hungerThreshold;
+	public void setHungryThreshold(int hungerThreshold) {
+		this.getHungryThreshold = hungerThreshold;
+	}
+	public int getWillEatThreshold() {
+		return willEatThreshold;
+	}
+	public void setWillEatThreshold(int willEatThreshold) {
+		this.willEatThreshold = willEatThreshold;
 	}
 	
 	

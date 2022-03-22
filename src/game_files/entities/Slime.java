@@ -16,16 +16,16 @@ public class Slime extends Creature{
 	private float directionVariance = 100;//	How much do they change their mind about where to go?
 
 	//Constructors for testing classes
-//	public Slime(float x, float y, int startSize, ArrayList<Entity> relevantEntities) {
-//		this (x, y, startSize, (String) null);
-//		this.relevantEntities = relevantEntities;
-//	}
-//	public Slime(float x, float y, int startSize, String name, ArrayList<Entity> relevantEntities) {
-//		this (x, y, startSize, name);
-//		this.relevantEntities = relevantEntities;
-//	}
+	//	public Slime(float x, float y, int startSize, ArrayList<Entity> relevantEntities) {
+	//		this (x, y, startSize, (String) null);
+	//		this.relevantEntities = relevantEntities;
+	//	}
+	//	public Slime(float x, float y, int startSize, String name, ArrayList<Entity> relevantEntities) {
+	//		this (x, y, startSize, name);
+	//		this.relevantEntities = relevantEntities;
+	//	}
 	//Constructors for tests ^^
-	
+
 	public Slime(float x, float y, int startSize) {
 		this (x, y, startSize, (String) null);
 	}
@@ -36,12 +36,15 @@ public class Slime extends Creature{
 
 	@Override
 	public void update() {
+		costOfLiving();
 		selectAppropriateBehavior();
 		actOnBehavior();
-		eatFoodWhenCloseEnough();
+		if (super.getHunger() < super.getWillEatThreshold()) {
+			eatFoodWhenCloseEnough();
+		}
 	}
 
-	
+
 	@Override
 	public void render(Graphics g) {
 		//g.drawImage(Assets.player, 0, 0, null);
@@ -50,9 +53,24 @@ public class Slime extends Creature{
 	}
 
 	private void selectAppropriateBehavior() {
-		if (super.getHunger() < 50) {
+		if (super.getHunger() < super.getHungryThreshold()) {
 			setBehavior(SlimeBehavior.TOWARDS_FOOD);
+		} else {
+			setBehavior(SlimeBehavior.RANDOM);
 		}
+	}
+	private void actOnBehavior() {
+		switch (behavior) {//	Choose what movement method to run
+		case RANDOM:
+			randomBehavior();
+			break;
+		case TOWARDS_FOOD:
+			findFoodBehavior();
+			break;
+		}
+	}
+	private void costOfLiving() {
+		setHunger((float)(getHunger() - 0.1));
 	}
 	private void randomBehavior() {
 		//System.out.println("Doing rand behav");
@@ -77,33 +95,49 @@ public class Slime extends Creature{
 		if (super.getDirectionX() > HelperMethods.screenWidth - HelperMethods.INVISIBLE_BOUNDARY) {super.setDirectionX(super.getDirectionX()-10);}
 		if (super.getDirectionY() < HelperMethods.INVISIBLE_BOUNDARY) {super.setDirectionY(super.getDirectionY()+10);}
 		if (super.getDirectionY() > HelperMethods.screenHeight - HelperMethods.INVISIBLE_BOUNDARY) {super.setDirectionY(super.getDirectionY()-10);}
+
+		navigateTowardsDirection();
 		
-		
-		float newDirX = super.getDirectionX() - super.getPositionX();
-		float newDirY = super.getDirectionY() - super.getPositionY();
-		//Normalize this
-		float vectorLength = (float) Math.sqrt(Math.pow(newDirX, 2) + Math.pow(newDirY, 2));
-		float normalizedDirX = newDirX/vectorLength;
-		float normalizedDirY = newDirY/vectorLength;
-		
-		float velocityX = normalizedDirX*super.getSpeed();
-		float velocityY = normalizedDirY*super.getSpeed();
-		
-		//System.out.println("Step Size: " + stepSize + " | XSS " + xStepSize + " | YSS "+yStepSize + " | NewDirX "+ newDirX + " | newDirY " + newDirY + " | Vector Length " + vectorLength
-		//		+ " | n.DirX " + normalizedDirX + " | n.dirY " + normalizedDirY + " | velX " +velocityX + " | velY " +velocityY + " | Speed " + super.getSpeed());
-		
-		super.setPosition(super.getPositionX()+velocityX, super.getPositionY()+velocityY);
 	}
+	private void findFoodBehavior() {
+		Berry closestBerry = null;
+		//Find the closest berry
+		for (Entity e : Entity.getRelevantEntities()) {
+			if (e instanceof Berry) {
+				if (closestBerry == null) {
+					closestBerry = (Berry) e;
+					continue;
+				}
+				float distToClosest = HelperMethods.getDistance(getPositionX(), getPositionY(), closestBerry.getPositionX(), closestBerry.getPositionY());
+				float distToE = HelperMethods.getDistance(getPositionX(), getPositionY(), e.getPositionX(), e.getPositionY());
+				if (distToE < distToClosest) {
+					closestBerry = (Berry) e;
+				}
+			}
+		}
+		
+		//No berries found
+		if (closestBerry == null) {
+			setBehavior(SlimeBehavior.RANDOM);
+			actOnBehavior();
+		} else {
+			//Navigate towards closest berry
+			setDirectionX(closestBerry.getPositionX());
+			setDirectionY(closestBerry.getPositionY());
+			navigateTowardsDirection();
+		}
+	}
+	
 	private void eatFoodWhenCloseEnough() {
 		for (Entity e : Entity.getRelevantEntities()) {
 			if (e instanceof Berry) {
-				float dist = HelperMethods.getDistance(super.getPositionX(), super.getPositionY(), e.getPositionX(), e.getPositionY());
-				if (dist < super.getSize() + e.getSize()) {
+				float dist = HelperMethods.getDistance(getPositionX(), getPositionY(), e.getPositionX(), e.getPositionY());
+				if (dist < getSize() + e.getSize()) {
 					//Eat the berry
-					super.setSize(super.getSize()+e.getSize());//Increase in size
-					super.setHunger(super.getHunger()+e.getSize());//Reduce hunger
-					if (super.getHunger() > 100) {
-						super.setHunger(100);//Limit max
+					setSize(getSize()+e.getSize());//Increase in size
+					setHunger(getHunger()+e.getSize());//Reduce hunger
+					if (getHunger() > 100) {
+						setHunger(100);//Limit max
 					}
 					e.killSelf();
 					break;//Break so the array doesn't loop too many times, as we just changed it
@@ -111,18 +145,7 @@ public class Slime extends Creature{
 			}
 		}
 	}
-	
-	private void actOnBehavior() {
-		switch (behavior) {//	Choose what movement method to run
-		case RANDOM:
-			randomBehavior();
-			break;
-		case TOWARDS_FOOD:
-			super.setPosition(getPositionX()+1, getPositionY()+1);
-			break;
-		}
-	}
-	
+
 	public SlimeBehavior getSlimeBehavior() {
 		return behavior;
 	}
