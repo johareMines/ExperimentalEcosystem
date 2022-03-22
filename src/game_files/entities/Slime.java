@@ -7,6 +7,7 @@ import javax.swing.text.Position;
 
 import game_files.HelperMethods;
 import game_files.gfx.Assets;
+import game_files.states.GameState;
 
 public class Slime extends Creature{
 	public enum SlimeBehavior {RANDOM, TOWARDS_FOOD};
@@ -14,8 +15,19 @@ public class Slime extends Creature{
 
 	private float directionVariance = 100;//	How much do they change their mind about where to go?
 
+	//Constructors for testing classes
+//	public Slime(float x, float y, int startSize, ArrayList<Entity> relevantEntities) {
+//		this (x, y, startSize, (String) null);
+//		this.relevantEntities = relevantEntities;
+//	}
+//	public Slime(float x, float y, int startSize, String name, ArrayList<Entity> relevantEntities) {
+//		this (x, y, startSize, name);
+//		this.relevantEntities = relevantEntities;
+//	}
+	//Constructors for tests ^^
+	
 	public Slime(float x, float y, int startSize) {
-		this (x, y, startSize, null);
+		this (x, y, startSize, (String) null);
 	}
 	public Slime(float x, float y, int startSize, String name) {
 		super (x, y, startSize, name);
@@ -26,6 +38,7 @@ public class Slime extends Creature{
 	public void update() {
 		selectAppropriateBehavior();
 		actOnBehavior();
+		eatFoodWhenCloseEnough();
 	}
 
 	
@@ -81,10 +94,20 @@ public class Slime extends Creature{
 		
 		super.setPosition(super.getPositionX()+velocityX, super.getPositionY()+velocityY);
 	}
-	private void eatFoodWhenHungry(ArrayList<Entity> entities) {
-		for (Entity e : entities) {
+	private void eatFoodWhenCloseEnough() {
+		for (Entity e : Entity.getRelevantEntities()) {
 			if (e instanceof Berry) {
-				
+				float dist = HelperMethods.getDistance(super.getPositionX(), super.getPositionY(), e.getPositionX(), e.getPositionY());
+				if (dist < super.getSize() + e.getSize()) {
+					//Eat the berry
+					super.setSize(super.getSize()+e.getSize());//Increase in size
+					super.setHunger(super.getHunger()+e.getSize());//Reduce hunger
+					if (super.getHunger() > 100) {
+						super.setHunger(100);//Limit max
+					}
+					e.killSelf();
+					break;//Break so the array doesn't loop too many times, as we just changed it
+				}
 			}
 		}
 	}

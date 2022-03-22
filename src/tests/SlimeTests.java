@@ -39,8 +39,9 @@ class SlimeTests {
 	
 	@BeforeEach
 	void setup() {
+		Entity.setRelevantEntities(new ArrayList<>());
+		entities = Entity.getRelevantEntities();
 		slime = new Slime(50, 50, 30, "The Tester");
-		entities = new ArrayList<>();
 		entities.add(slime);
 	}
 	
@@ -54,7 +55,7 @@ class SlimeTests {
 	@Test
 	void testEat() {
 		slime.setHunger(20);
-		Berry berry = new Berry(50, 50); //Spawn one on the slime
+		Berry berry = new Berry(50, 50, 10); //Spawn one on the slime
 		entities.add(berry);
 		slime.update();
 		Assert.assertTrue(slime.getHunger() > 20);// It should have eaten the berry

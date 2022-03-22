@@ -4,11 +4,9 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class FoodTree extends Entity{
-	private ArrayList<Entity> foods;
 
-	public FoodTree(float x, float y) {
-		super(x, y);
-		foods = new ArrayList<Entity>();
+	public FoodTree(float x, float y, int startSize) {
+		super(x, y, startSize);
 	}
 
 	@Override

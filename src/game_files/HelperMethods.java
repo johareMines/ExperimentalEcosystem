@@ -42,7 +42,12 @@ public class HelperMethods {
 		      if (r2>r1) {return r1;}
 		}
 	}
-
+	//Distance between two points
+	public static float getDistance(float x1, float y1, float x2, float y2) {
+		float xDiff = x1 - x2;
+		float yDiff = y1 - y2;
+		return (float) Math.sqrt((Math.pow(xDiff, 2)+Math.pow(yDiff, 2)));
+	}
 
 	public static String getName() {
 		return names[rand().nextInt(names.length)];

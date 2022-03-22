@@ -11,52 +11,52 @@ import game_files.entities.Slime;
 import game_files.gfx.Assets;
 
 public class GameState extends State {
-	private ArrayList<Entity> entities;
+	//private static ArrayList<Entity> entities;
 	
 	private Slime slime;
 
 	
 	public GameState() {
-		entities = new ArrayList<Entity>();
+		Entity.setRelevantEntities(new ArrayList<Entity>());
 		
 		//Declare Slime Amount
 		for (int i=0; i<HelperMethods.SLIME_START_AMT; i++) {
 			int startX = HelperMethods.rand().nextInt(HelperMethods.screenWidth);
 			int startY = HelperMethods.rand().nextInt(HelperMethods.screenHeight);
 			int startSize = HelperMethods.rand().nextInt(20, 50);
-			entities.add(new Slime(startX, startY, startSize));
+			Entity.getRelevantEntities().add(new Slime(startX, startY, startSize));
 		}
 	}
 	
 	
 	@Override
 	public void update() {
-		for (Entity e : entities) {
+		for (Entity e : Entity.getRelevantEntities()) {
 			e.update();
 		}
 	}
 
 	@Override
 	public void render(Graphics g) {
-		for (Entity e : entities) {
+		for (Entity e : Entity.getRelevantEntities()) {
 			e.render(g);
 		}
 	}
 
 
-	public ArrayList<Entity> getEntities() {
-		return entities;
-	}
-	
-	public ArrayList<Creature> getCreatures() {
-		ArrayList<Creature> returnList = new ArrayList<>();
-		for (Entity e : entities) {
-			if (e instanceof Creature) {
-				returnList.add((Creature) e);
-			}
-		}
-		return returnList;
-	}
+//	public static ArrayList<Entity> getEntities() {
+//		return entities;
+//	}
+//	
+//	public ArrayList<Creature> getCreatures() {
+//		ArrayList<Creature> returnList = new ArrayList<>();
+//		for (Entity e : entities) {
+//			if (e instanceof Creature) {
+//				returnList.add((Creature) e);
+//			}
+//		}
+//		return returnList;
+//	}
 	
 	
 //	//Adder methods for the JUnit tests

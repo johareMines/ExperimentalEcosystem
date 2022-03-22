@@ -4,9 +4,8 @@ import java.awt.Graphics;
 
 public class Berry extends Entity {
 
-	public Berry(float x, float y) {
-		super(x, y);
-		// TODO Auto-generated constructor stub
+	public Berry(float x, float y, int startSize) {
+		super(x, y, startSize);
 	}
 
 	@Override
