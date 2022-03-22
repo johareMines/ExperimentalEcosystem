@@ -1,6 +1,8 @@
 package tests;
 
 
+import java.util.ArrayList;
+
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,10 +35,13 @@ class SlimeTests {
 //	}
 	
 	Slime slime;
+	ArrayList<Entity> entities;
 	
 	@BeforeEach
 	void setup() {
 		slime = new Slime(50, 50, 30, "The Tester");
+		entities = new ArrayList<>();
+		entities.add(slime);
 	}
 	
 	@Test
@@ -50,8 +55,9 @@ class SlimeTests {
 	void testEat() {
 		slime.setHunger(20);
 		Berry berry = new Berry(50, 50); //Spawn one on the slime
+		entities.add(berry);
 		slime.update();
-		Assert.assertTrue(slime.getHunger() > 20);
+		Assert.assertTrue(slime.getHunger() > 20);// It should have eaten the berry
 	}
 	
 	
