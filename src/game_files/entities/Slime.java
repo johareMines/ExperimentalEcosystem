@@ -1,6 +1,7 @@
 package game_files.entities;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import javax.swing.text.Position;
 
@@ -79,6 +80,13 @@ public class Slime extends Creature{
 		//		+ " | n.DirX " + normalizedDirX + " | n.dirY " + normalizedDirY + " | velX " +velocityX + " | velY " +velocityY + " | Speed " + super.getSpeed());
 		
 		super.setPosition(super.getPositionX()+velocityX, super.getPositionY()+velocityY);
+	}
+	private void eatFoodWhenHungry(ArrayList<Entity> entities) {
+		for (Entity e : entities) {
+			if (e instanceof Berry) {
+				
+			}
+		}
 	}
 	
 	private void actOnBehavior() {
