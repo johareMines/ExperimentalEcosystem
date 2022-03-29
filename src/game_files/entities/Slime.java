@@ -15,17 +15,6 @@ public class Slime extends Creature{
 
 	private float directionVariance = 100;//	How much do they change their mind about where to go?
 
-	//Constructors for testing classes
-	//	public Slime(float x, float y, int startSize, ArrayList<Entity> relevantEntities) {
-	//		this (x, y, startSize, (String) null);
-	//		this.relevantEntities = relevantEntities;
-	//	}
-	//	public Slime(float x, float y, int startSize, String name, ArrayList<Entity> relevantEntities) {
-	//		this (x, y, startSize, name);
-	//		this.relevantEntities = relevantEntities;
-	//	}
-	//Constructors for tests ^^
-
 	public Slime(float x, float y, int startSize) {
 		this (x, y, startSize, (String) null);
 	}
@@ -34,6 +23,7 @@ public class Slime extends Creature{
 		setBehavior(SlimeBehavior.RANDOM);
 	}
 
+	//Call all applicable functions
 	@Override
 	public void update() {
 		costOfLiving();
@@ -44,7 +34,7 @@ public class Slime extends Creature{
 		}
 	}
 
-
+	//Draw the slime
 	@Override
 	public void render(Graphics g) {
 		//g.drawImage(Assets.player, 0, 0, null);
@@ -69,8 +59,10 @@ public class Slime extends Creature{
 			break;
 		}
 	}
+	//Decrement values according to the cost of living
 	private void costOfLiving() {
-		setHunger((float)(getHunger() - 0.1));
+		float costOfLiving = 0.01f;
+		setHunger((float)(getHunger() - costOfLiving));
 	}
 	private void randomBehavior() {
 		//System.out.println("Doing rand behav");

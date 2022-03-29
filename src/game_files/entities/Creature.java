@@ -6,7 +6,7 @@ import game_files.HelperMethods;
 
 public abstract class Creature extends Entity {
 	private int health, maxHealth, getHungryThreshold, willEatThreshold;
-	private float directionX, directionY, speed, hunger;
+	private float directionX, directionY, speed, hunger, smellSize;
 	private String name;
 	public Creature(float x, float y, int startSize, String name) {
 		super(x, y, startSize);

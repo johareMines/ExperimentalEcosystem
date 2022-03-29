@@ -12,7 +12,8 @@ public class HelperMethods {
 	public static int screenHeight;
 	public static String[] names = {"BARN HARNIT", "EGG NAD", "Fallen Tree", "Gust of three winds", "sanko", "Teebo", "Waltz?", "Prouu", "Fredrick", 
 			"slow bump", "q-tip", "Eneumerated Melon", "Obtuse Goose", "Molten Fingertrap", "Illiterate Frenchman", "Squeemish Platelet", "Too small of a feather", 
-			"High hanging fruit", "who0ps", "Asymmetric Moose Antler", "bonkman", "Cruddy Squeeze", "Sneevile", "Pwiertie", "Grunbo", "Clyide", "Pansh"};
+			"High hanging fruit", "who0ps", "Asymmetric Moose Antler", "bonkman", "Cruddy Squeeze", "Sneevile", "Pwiertie", "Grunbo", "Clyide", "Pansh",
+			"Estranged Homeowner", "Ugly lil truther", "shid", "boogermonger", ""};// Yo fucks at the party, add a name
 	
 
 
