@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import game_files.entities.Berry;
 import game_files.entities.Entity;
 import game_files.entities.Slime;
+import game_files.entities.Slime.SlimeBehavior;
 
 class SlimeTests {
 //	static Game game;
@@ -83,5 +84,17 @@ class SlimeTests {
 		slime.setSmellSize(100);
 		slime.update();
 		Assert.assertEquals(2, slime.getSmellableBerries().size());
+	}
+	
+	@Test
+	//Test that slimes can't smell too far
+	void testSmellTooFar() {
+		Berry berry = new Berry(50, 250, 10); //Spawn one too far away
+		entities.add(berry);
+		slime.setSmellSize(100);
+		slime.setHunger(20);
+		slime.update();
+		Assert.assertEquals(0, slime.getSmellableBerries().size());
+		Assert.assertTrue(slime.getSlimeBehavior() != SlimeBehavior.TOWARDS_FOOD);
 	}
 }

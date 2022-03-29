@@ -28,6 +28,7 @@ public class Slime extends Creature{
 	//Call all applicable functions
 	@Override
 	public void update() {
+		cleanSelfArrays();
 		costOfLiving();
 		smellBerries();
 		selectAppropriateBehavior();
@@ -41,8 +42,19 @@ public class Slime extends Creature{
 	@Override
 	public void render(Graphics g) {
 		//g.drawImage(Assets.player, 0, 0, null);
-		g.drawRect((int)super.getPositionX(), (int)super.getPositionY(), 30, 30);
+		g.drawRect((int)getPositionX()-getSize()/2, (int)getPositionY()-getSize()/2, getSize(), getSize());
 
+	}
+	
+	@Override
+	public void cleanSelfArrays() {
+		ArrayList<Berry> berriesToRemove = new ArrayList<>();
+		for (Berry b : smellableBerries) {
+			if (!Entity.getRelevantEntities().contains(b)) {
+				berriesToRemove.add(b);
+			}
+		}
+		smellableBerries.removeAll(berriesToRemove);
 	}
 
 	private void selectAppropriateBehavior() {
@@ -64,10 +76,10 @@ public class Slime extends Creature{
 	}
 	//Decrement values according to the cost of living
 	private void costOfLiving() {
-		float costOfLiving = 0.01f;
+		float costOfLiving = 0.1f;
 		setHunger((float)(getHunger() - costOfLiving));
 	}
-	
+
 	//Find close enough berries
 	private void smellBerries() {
 		ArrayList<Berry> allBerries = new ArrayList<>();
@@ -79,9 +91,9 @@ public class Slime extends Creature{
 				}
 			}
 		}
-		
+
 	}
-	
+
 	private void randomBehavior() {
 		//System.out.println("Doing rand behav");
 		float stepSize = HelperMethods.monteCarlo() * directionVariance;
@@ -107,25 +119,24 @@ public class Slime extends Creature{
 		if (super.getDirectionY() > HelperMethods.screenHeight - HelperMethods.INVISIBLE_BOUNDARY) {super.setDirectionY(super.getDirectionY()-10);}
 
 		navigateTowardsDirection();
-		
+
 	}
 	private void findFoodBehavior() {
 		Berry closestBerry = null;
 		//Find the closest berry
-		for (Entity e : Entity.getRelevantEntities()) {
-			if (e instanceof Berry) {
-				if (closestBerry == null) {
-					closestBerry = (Berry) e;
-					continue;
-				}
-				float distToClosest = HelperMethods.getDistance(getPositionX(), getPositionY(), closestBerry.getPositionX(), closestBerry.getPositionY());
-				float distToE = HelperMethods.getDistance(getPositionX(), getPositionY(), e.getPositionX(), e.getPositionY());
-				if (distToE < distToClosest) {
-					closestBerry = (Berry) e;
-				}
+		for (Berry b : smellableBerries) {
+			if (closestBerry == null) {
+				closestBerry = (Berry) b;
+				continue;
 			}
+			float distToClosest = HelperMethods.getDistance(getPositionX(), getPositionY(), closestBerry.getPositionX(), closestBerry.getPositionY());
+			float distToE = HelperMethods.getDistance(getPositionX(), getPositionY(), b.getPositionX(), b.getPositionY());
+			if (distToE < distToClosest) {
+				closestBerry = b;
+			}
+
 		}
-		
+
 		//No berries found
 		if (closestBerry == null) {
 			setBehavior(SlimeBehavior.RANDOM);
@@ -137,7 +148,7 @@ public class Slime extends Creature{
 			navigateTowardsDirection();
 		}
 	}
-	
+
 	private void eatFoodWhenCloseEnough() {
 		for (Entity e : Entity.getRelevantEntities()) {
 			if (e instanceof Berry) {
@@ -172,5 +183,6 @@ public class Slime extends Creature{
 		this.smellableBerries = smellableBerries;
 	}
 	
+
 }
 

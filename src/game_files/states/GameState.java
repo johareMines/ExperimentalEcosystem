@@ -45,8 +45,7 @@ public class GameState extends State {
 		for (Entity e : entity) {
 			e.update();
 		}
-		//if (Entity.getEntitiesToRemove().s)
-		entity.removeAll(Entity.getEntitiesToRemove());
+		Entity.getRelevantEntities().removeAll(Entity.getEntitiesToRemove());
 	}
 
 	@Override

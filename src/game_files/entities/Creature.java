@@ -25,6 +25,7 @@ public abstract class Creature extends Entity {
 			this.name = name;
 	}
 	
+	public abstract void cleanSelfArrays();
 	
 	public void navigateTowardsDirection() {
 		float newDirX = getDirectionX() - getPositionX();
