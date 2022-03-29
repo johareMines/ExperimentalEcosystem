@@ -12,6 +12,7 @@ import game_files.states.GameState;
 public class Slime extends Creature{
 	public enum SlimeBehavior {RANDOM, TOWARDS_FOOD};
 	private SlimeBehavior behavior;
+	private ArrayList<Berry> smellableBerries;
 
 	private float directionVariance = 100;//	How much do they change their mind about where to go?
 
@@ -21,12 +22,14 @@ public class Slime extends Creature{
 	public Slime(float x, float y, int startSize, String name) {
 		super (x, y, startSize, name);
 		setBehavior(SlimeBehavior.RANDOM);
+		smellableBerries = new ArrayList<>();
 	}
 
 	//Call all applicable functions
 	@Override
 	public void update() {
 		costOfLiving();
+		smellBerries();
 		selectAppropriateBehavior();
 		actOnBehavior();
 		if (super.getHunger() < super.getWillEatThreshold()) {
@@ -64,6 +67,21 @@ public class Slime extends Creature{
 		float costOfLiving = 0.01f;
 		setHunger((float)(getHunger() - costOfLiving));
 	}
+	
+	//Find close enough berries
+	private void smellBerries() {
+		ArrayList<Berry> allBerries = new ArrayList<>();
+		for (Entity e : Entity.getRelevantEntities()) {
+			if (e instanceof Berry) {
+				float dist = HelperMethods.getDistance(getPositionX(), getPositionY(), e.getPositionX(), e.getPositionY());
+				if (dist <= getSmellSize()) {
+					smellableBerries.add((Berry) e);
+				}
+			}
+		}
+		
+	}
+	
 	private void randomBehavior() {
 		//System.out.println("Doing rand behav");
 		float stepSize = HelperMethods.monteCarlo() * directionVariance;
@@ -147,5 +165,12 @@ public class Slime extends Creature{
 		System.out.println("Slime " + super.getName()+ " selected behavior " + behavior);
 		this.behavior = behavior;
 	}
+	public ArrayList<Berry> getSmellableBerries() {
+		return smellableBerries;
+	}
+	public void setSmellableBerries(ArrayList<Berry> smellableBerries) {
+		this.smellableBerries = smellableBerries;
+	}
+	
 }
 

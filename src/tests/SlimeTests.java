@@ -33,6 +33,7 @@ class SlimeTests {
 	@BeforeEach
 	void setup() {
 		Entity.setRelevantEntities(new ArrayList<>());
+		Entity.setEntitiesToRemove(new ArrayList<>());
 		entities = Entity.getRelevantEntities();
 		slime = new Slime(50, 50, 30, "The Tester");
 		entities.add(slime);
@@ -70,5 +71,17 @@ class SlimeTests {
 		Assert.assertTrue(berry.getPositionY() == slime.getDirectionY());
 	}
 	
-
+	@Test
+	//Test that slimes can smell food
+	void testSlimeSmell() {
+		Berry berry = new Berry(50, 150, 10); //Spawn one a bit away
+		Berry berry2 = new Berry(50, 100, 10); //Spawn one a bit away
+		Berry berry3 = new Berry(50, 200, 10); // Too far
+		entities.add(berry);
+		entities.add(berry2);
+		entities.add(berry3);
+		slime.setSmellSize(100);
+		slime.update();
+		Assert.assertEquals(2, slime.getSmellableBerries().size());
+	}
 }

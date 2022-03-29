@@ -24,11 +24,8 @@ public abstract class Entity {
 	
 	public void killSelf() {
 		//remove references to self, Garbage collector should remove it
-//		relevantEntities.remove(this);
 		entitiesToRemove.add(this);
 	}
-	
-	
 	
 	public float getPositionX() {
 		return x;

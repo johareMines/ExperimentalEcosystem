@@ -45,6 +45,7 @@ public class GameState extends State {
 		for (Entity e : entity) {
 			e.update();
 		}
+		//if (Entity.getEntitiesToRemove().s)
 		entity.removeAll(Entity.getEntitiesToRemove());
 	}
 
@@ -54,32 +55,5 @@ public class GameState extends State {
 			e.render(g);
 		}
 	}
-
-
-//	public static ArrayList<Entity> getEntities() {
-//		return entities;
-//	}
-//	
-//	public ArrayList<Creature> getCreatures() {
-//		ArrayList<Creature> returnList = new ArrayList<>();
-//		for (Entity e : entities) {
-//			if (e instanceof Creature) {
-//				returnList.add((Creature) e);
-//			}
-//		}
-//		return returnList;
-//	}
-	
-	
-//	//Adder methods for the JUnit tests
-//	public void addSlime(float x, float y) {
-//		entities.add(new Slime(x,y));
-//	}
-//	public void addSlime(float x, float y, String name) {
-//		entities.add(new Slime(x, y, name));
-//	}
-//	public void addSlime(Slime slime) {
-//		entities.add(slime);
-//	}
 
 }

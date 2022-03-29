@@ -18,6 +18,7 @@ public abstract class Creature extends Entity {
 		this.directionY = y;
 		this.getHungryThreshold = 50;
 		this.willEatThreshold = 70;
+		this.smellSize = 150;
 		if (name == null)
 			this.name = HelperMethods.getName();
 		else 
@@ -89,6 +90,12 @@ public abstract class Creature extends Entity {
 	}
 	public void setWillEatThreshold(int willEatThreshold) {
 		this.willEatThreshold = willEatThreshold;
+	}
+	public float getSmellSize() {
+		return smellSize;
+	}
+	public void setSmellSize(float smellSize) {
+		this.smellSize = smellSize;
 	}
 	
 	
